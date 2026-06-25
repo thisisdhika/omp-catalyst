@@ -1,0 +1,43 @@
+{
+  "name": "omp-catalyst",
+  "version": "1.0.0",
+  "description": "Catalyst Squad orchestrator for oh-my-pi — 9 specialized subagents with HOTL oversight and Karpathy principles",
+  "type": "module",
+  "bin": {
+    "catalyst": "./bin/catalyst.js"
+  },
+  "scripts": {
+    "postinstall": "echo 'omp-catalyst installed. Run `catalyst init` to set up agent prompts and rules.'"
+  },
+  "keywords": [
+    "oh-my-pi",
+    "omp",
+    "plugin",
+    "orchestrator",
+    "catalyst",
+    "subagents",
+    "hotl"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "commander": "^13.0.0",
+    "prompts": "^2.4.2",
+    "chalk": "^5.4.1"
+  },
+  "peerDependencies": {
+    "@oh-my-pi/pi-coding-agent": "*"
+  },
+  "peerDependenciesMeta": {
+    "@oh-my-pi/pi-coding-agent": {
+      "optional": true
+    }
+  },
+  "omp": {
+    "skills": [
+      "skills/"
+    ]
+  }
+}

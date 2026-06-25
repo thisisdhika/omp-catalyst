@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+
+# Noesis — generated graph artifacts (local tracking only)
+# Noesis — projected vault artifacts (derived from state.json)
+# Noesis — cognitive state directory (regenerated on init)
