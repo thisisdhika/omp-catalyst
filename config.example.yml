@@ -1,0 +1,67 @@
+# Catalyst Squad — model mode definitions
+#
+# Place under `catalyst.modes` in your OMP config:
+#   ~/.omp/agent/config.yml   (global)
+#   .omp/config.yml            (project — overrides global)
+#
+# Each mode maps specialist names to model specs.
+# Unset specialist/mode pairs fall back to the agent's frontmatter model.
+# Custom mode names are supported (any key under `modes`).
+
+catalyst:
+  modes:
+    free:
+      scout: kilo/poolside/laguna-m.1:free
+      researcher: opencode-zen/deepseek-v4-flash-free
+      planner: kilo/poolside/laguna-m.1:free
+      worker: kilo/poolside/laguna-xs.2:free
+      reviewer: kilo/poolside/laguna-m.1:free
+      tester: kilo/poolside/laguna-xs.2:free
+      designer: kilo/poolside/laguna-m.1:free
+      debugger: opencode-zen/deepseek-v4-flash-free
+      oracle: kilo/poolside/laguna-m.1:free
+      kugutsu: opencode-zen/deepseek-v4-flash-free
+    low:
+      scout: google-antigravity/gemini-2.5-flash-lite
+      researcher: opencode-go/deepseek-v4-flash
+      planner: opencode-go/deepseek-v4-flash
+      worker: google-antigravity/gemini-3.1-flash-lite
+      reviewer: opencode-go/deepseek-v4-flash
+      tester: opencode-go/deepseek-v4-flash
+      designer: google-antigravity/gemini-2.5-flash
+      debugger: google-antigravity/gemini-3.1-flash-lite
+      oracle: opencode-go/deepseek-v4-flash
+      kugutsu: openai-codex/gpt-5.5
+    mid:
+      scout: opencode-go/deepseek-v4-flash
+      researcher: openai-codex/gpt-5.4-mini
+      planner: opencode-go/qwen-3.7-plus
+      worker: google-antigravity/gemini-3.5-flash
+      reviewer: openai-codex/gpt-5.4-mini
+      tester: google-antigravity/gemini-3.5-flash
+      designer: openai-codex/gpt-5.4-mini
+      debugger: opencode-go/deepseek-v4-flash
+      oracle: opencode-go/qwen-3.7-plus
+      kugutsu: google-antigravity/claude-sonnet-4-6
+    high:
+      scout: opencode-go/deepseek-v4-pro
+      researcher: opencode-go/deepseek-v4-pro
+      planner: google-antigravity/gemini-3.1-pro
+      worker: openai-codex/gpt-5.4
+      reviewer: google-antigravity/claude-sonnet-4-6
+      tester: openai-codex/gpt-5.4
+      designer: opencode-go/qwen-3.7-plus
+      debugger: opencode-go/qwen-3.7-plus
+      oracle: openai-codex/gpt-5.4
+      kugutsu: google-antigravity/claude-opus-4-6
+    hyper:
+      scout: openai-codex/gpt-5.5
+      researcher: google-antigravity/gemini-3.1-pro
+      planner: openai-codex/gpt-5.5
+      worker: opencode-go/deepseek-v4-pro
+      reviewer: google-antigravity/claude-opus-4-6
+      tester: openai-codex/gpt-5.5
+      designer: google-antigravity/gemini-3.1-pro
+      debugger: openai-codex/gpt-5.5
+      oracle: google-antigravity/claude-opus-4-6
+      kugutsu: openai-codex/gpt-5.5

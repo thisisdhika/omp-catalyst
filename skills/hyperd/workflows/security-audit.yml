@@ -1,0 +1,30 @@
+name: security-audit
+description: Security-focused audit pipeline. Use before production launches, after auth changes, for compliance prep, or any time a thorough security posture review is needed.
+phases:
+  - name: scout
+    agent: scout
+    task: "Map the attack surface: all entry points (HTTP routes, CLI, events, queues), auth/authz boundaries, data flows touching PII or secrets, third-party integrations, and dependency inventory."
+    output_hint: "Attack surface map, auth boundary diagram, PII data flows, dependency list"
+
+  - name: code-audit
+    agent: reviewer
+    task: "Audit the codebase for OWASP Top 10 vulnerabilities, injection risks, broken auth, insecure deserialization, XXE, SSRF, and security misconfigurations. Focus on entry points identified by scout."
+    output_hint: "Vulnerability list with OWASP category, severity (CRITICAL/HIGH/MEDIUM/LOW), affected files, CWE refs"
+    parallel: false
+
+  - name: dependency-audit
+    agent: researcher
+    task: "Audit all dependencies (package.json, requirements.txt, go.mod, etc.) for known CVEs, abandoned packages, supply-chain risks, and version drift. Cross-reference against scout's dependency list."
+    output_hint: "CVE findings, risk-rated dependency list, recommended updates/replacements"
+    parallel: true
+
+  - name: gate
+    agent: oracle
+    gate: oracle
+    task: "Assess the aggregate security findings. Determine whether the system is safe to proceed to production/deployment or requires remediation first. Flag any CRITICAL or HIGH findings that are blockers."
+    output_hint: "APPROVED (proceed) / BLOCKED (must remediate) / MODIFY (conditional with required fixes)"
+
+  - name: report
+    agent: planner
+    task: "Compile all audit findings into a structured security report. Include: executive summary, risk matrix, finding inventory, recommended remediation priority order, and compliance notes if applicable."
+    output_hint: "Security report: exec summary, risk matrix, remediation backlog, compliance notes, sign-off status"

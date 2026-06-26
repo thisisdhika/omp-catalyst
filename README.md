@@ -68,10 +68,11 @@ The `catalyst init` command presents an interactive prompt to select which agent
 
 | Command | Description |
 |---------|-------------|
-| `catalyst init` | Interactive setup -- select agents and configure rules |
+| `catalyst init` | Interactive setup — select agents and configure rules |
 | `catalyst add <target>` | Add components: subagents, rules, prompts, or all |
 | `catalyst remove <target>` | Remove installed components |
 | `catalyst status` | Show what is installed vs available |
+| `catalyst mode [mode]` | Set or view agent model mode (free, low, mid, high, hyper, default) |
 
 Target values for `add` and `remove`: `subagents`, `rules`, `prompts`, `all`.
 

@@ -1,0 +1,24 @@
+name: review
+description: Code and security review pipeline. Use for PR reviews, pre-merge audits, architecture assessments, or any quality gate checkpoint.
+phases:
+  - name: scout
+    agent: scout
+    task: "Map the scope of changes or the target codebase area. Identify what has changed, what it touches, and what conventions it should conform to. Produce a review brief."
+    output_hint: "Change map, affected subsystems, conventions checklist, scope assessment"
+
+  - name: code-review
+    agent: reviewer
+    task: "Perform a thorough code review: correctness, logic errors, naming, structure, test coverage, error handling, and adherence to project conventions identified by scout."
+    output_hint: "Findings with severity (CRITICAL/HIGH/MEDIUM/LOW), line-level comments, pass/fail"
+    parallel: false
+
+  - name: security-review
+    agent: reviewer
+    task: "Perform a security-focused review: injection risks, auth/authz gaps, secret exposure, dependency vulnerabilities, input validation, and data handling. Focus on OWASP Top 10 and supply chain risks."
+    output_hint: "Security findings with severity, CVEs or CWEs if applicable, remediation recommendations"
+    parallel: true
+
+  - name: report
+    agent: planner
+    task: "Synthesize all review findings into a structured review report. Group by severity, deduplicate, prioritize required vs optional changes, and produce a clear verdict: APPROVE / REQUEST CHANGES / REJECT."
+    output_hint: "Executive summary, grouped findings, verdict, required actions before merge"

@@ -1,0 +1,33 @@
+name: feature
+description: End-to-end workflow for implementing a new feature. Covers research through testing with a review gate before merging.
+phases:
+  - name: research
+    agent: researcher
+    task: "Research the domain, relevant prior art, libraries, patterns, and constraints for the requested feature. Identify the best approach and surface any gotchas."
+    output_hint: "Domain summary, recommended approach, relevant libraries/patterns, open questions"
+
+  - name: scout
+    agent: scout
+    task: "Map the existing codebase for relevant patterns, conventions, extension points, and files that will be touched by this feature. Identify integration points and potential conflicts."
+    output_hint: "Affected files, existing patterns to follow, integration points, naming conventions"
+
+  - name: plan
+    agent: planner
+    task: "Design the feature architecture based on research and scout findings. Define the vertical slice: API contracts, data models, component boundaries, and implementation order. Produce a task list for the worker."
+    output_hint: "Architecture diagram or description, API contracts, ordered task list, definition of done"
+
+  - name: implement
+    agent: worker
+    task: "Implement the feature according to the plan. Follow existing codebase conventions identified by scout. Implement in the order specified by planner."
+    output_hint: "Modified/created files, implementation notes, any deviations from plan with justification"
+
+  - name: review
+    agent: reviewer
+    task: "Review the implementation for correctness, security, performance, and adherence to the plan and codebase conventions. Return findings with severity ratings."
+    output_hint: "Findings list with severity (CRITICAL/HIGH/MEDIUM/LOW), pass/fail verdict, required changes"
+    parallel: false
+
+  - name: test
+    agent: tester
+    task: "Write comprehensive tests for the new feature: unit tests, integration tests, and at least one E2E user journey. Ensure edge cases and error paths are covered."
+    output_hint: "Test files created, test coverage summary, any discovered issues"

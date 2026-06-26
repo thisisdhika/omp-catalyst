@@ -1,0 +1,22 @@
+name: bugfix
+description: Standard workflow for diagnosing and fixing bugs. Use for crash reports, unexpected behavior, regressions, and production incidents.
+phases:
+  - name: diagnose
+    agent: debugger
+    task: "Investigate the bug. Identify root cause, affected code paths, and reproduce the failure with a minimal case. Document the exact failure point and why it occurs."
+    output_hint: "Root cause statement, affected files/functions, reproduction steps, hypothesis for fix"
+
+  - name: plan
+    agent: planner
+    task: "Based on the debugger's root cause analysis, design the fix approach. Define the implementation plan, identify any API or interface changes, and flag risks or side effects."
+    output_hint: "Detailed fix plan with file-level changes, risk assessment, test strategy"
+
+  - name: implement
+    agent: worker
+    task: "Implement the fix exactly as specified in the plan. Do not scope-creep. Apply only the changes required to resolve the diagnosed root cause."
+    output_hint: "List of modified files, diff summary, notes on any plan deviations"
+
+  - name: verify
+    agent: tester
+    task: "Verify the fix resolves the original bug without introducing regressions. Write or update tests covering the failure case and adjacent paths. Run existing test suite."
+    output_hint: "Test results, coverage report, regression check summary"

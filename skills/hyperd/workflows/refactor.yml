@@ -1,0 +1,23 @@
+name: refactor
+description: Structured refactoring workflow. Use for large-scale cleanups, architectural improvements, tech debt reduction, or module extraction.
+phases:
+  - name: scout
+    agent: scout
+    task: "Map the target code area in full: file structure, dependencies, call graphs, public interfaces, test coverage, and existing patterns. Identify all callers/consumers of code that will change."
+    output_hint: "Dependency map, interface inventory, test coverage gaps, caller list, risk hotspots"
+
+  - name: plan
+    agent: planner
+    task: "Design the refactoring approach based on scout findings. Define: what changes, what stays, the migration path, interface contracts before/after, and a safe execution order that maintains working state at each step."
+    output_hint: "Before/after interface contracts, execution order, rollback points, risk assessment"
+    gate: oracle
+
+  - name: implement
+    agent: worker
+    task: "Execute the refactoring plan step by step. Maintain green tests at each step. Do not add features — refactor only. Follow the plan's execution order strictly."
+    output_hint: "Completed steps, modified files, test status at each checkpoint, any deviations"
+
+  - name: review
+    agent: reviewer
+    task: "Review the refactored code. Confirm: all original interfaces are preserved or migrated, no regressions in behavior, no new issues introduced, and the refactoring goal was achieved."
+    output_hint: "Interface parity check, behavioral diff analysis, findings with severity, verdict"

@@ -1,0 +1,23 @@
+name: research
+description: Deep research and synthesis workflow. Use for technology evaluation, domain exploration, competitive analysis, or producing a decision brief before starting implementation.
+phases:
+  - name: research
+    agent: researcher
+    task: "Conduct thorough research on the topic. Cover: current state of the field, key approaches, trade-offs, real-world adoption, known failure modes, and relevant documentation or papers. Cite all sources."
+    output_hint: "Structured research notes with citations, key findings, open questions"
+
+  - name: scout
+    agent: scout
+    task: "Map any existing code, tooling, or infrastructure in the current codebase that is relevant to the research topic. Identify existing investments, patterns, or constraints that should inform the synthesis."
+    output_hint: "Existing relevant code/config, current patterns, constraints discovered"
+    optional: true
+
+  - name: synthesize
+    agent: planner
+    task: "Synthesize the research and codebase findings into a decision brief. Define the recommended approach, alternatives considered, trade-offs, and a proposed action plan. Include a risk section."
+    output_hint: "Decision brief: recommendation, alternatives, trade-offs, proposed next steps, risks"
+
+  - name: validate
+    agent: researcher
+    task: "Validate the synthesis against the raw research. Check for misrepresentations, unsupported claims, or gaps. Surface any contradictions between the recommendation and the evidence."
+    output_hint: "Validation notes, corrections, confidence rating, final brief status (VALIDATED / NEEDS REVISION)"

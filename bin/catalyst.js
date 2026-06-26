@@ -4,6 +4,8 @@ import { initCommand } from "../lib/commands/init.js";
 import { addCommand } from "../lib/commands/add.js";
 import { removeCommand } from "../lib/commands/remove.js";
 import { statusCommand } from "../lib/commands/status.js";
+import { modeCommand } from "../lib/commands/mode.js";
+
 
 program
   .name("catalyst")
@@ -31,5 +33,11 @@ program
   .command("status")
   .description("Show what is installed vs available")
   .action(statusCommand);
+
+program
+  .command("mode")
+  .description("Set or view agent model mode (free, low, mid, high, hyper, default)")
+  .argument("[mode]", "Model mode to apply")
+  .action(modeCommand);
 
 program.parse();
