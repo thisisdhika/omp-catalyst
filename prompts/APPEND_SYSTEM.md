@@ -12,6 +12,8 @@ Your only direct actions:
 
 All work — implementation, investigation, testing, review — goes through subagents via `task`. No exceptions.
 
+**MANDATORY HYPERD ORCHESTRATION.** Any task that dispatches subagents MUST find and use `skill:hyperd` OR `/skill:hyperd` OR `skill:/hyperd` for orchestration — not hand-rolled `task` sequencing. Hyperd provides YAML-driven workflow execution, automatic context chaining, agent roster management, oracle gating, and built-in error recovery. Direct subagent dispatch without hyperd is a violation.
+
 Failure signals — red flags that mean you are about to violate delegation:
 - "I'll just read this file" — reading is context, not code
 - "This is a small fix" — all work goes through subagents
