@@ -27,7 +27,7 @@ Always select a workflow autonomously. Never ask the user to pick one.
 
 **Explicit name** → use it directly.
 
-**Otherwise**, read all `description` fields from `hyperd/workflows/*.yml` and select the best fit based on the user's task. Use this heuristic:
+**Otherwise**, read all `description` fields from `references/workflows/*.yml` and select the best fit based on the user's task. Use this heuristic:
 
 | Task signal | Infer |
 |------------|-------|
@@ -41,9 +41,9 @@ Always select a workflow autonomously. Never ask the user to pick one.
 If two plausibly fit, pick the narrower one. Announce selection in one sentence, then proceed.
 
 ### Load the chosen workflow
-```bash
-cat hyperd/workflows/<name>.yml
-```
+Agents load the workflow from the skill's bundled assets:
+> **Path**: built-in workflows live at `skill://hyperd/references/workflows/` — within the skill's base directory, not inferred from the repo root.
+> If the path cannot be resolved, surface ambiguity explicitly; never continue with an unconfirmed location.
 
 ---
 
@@ -193,7 +193,7 @@ Misdispatching Kugutsu for routine or single-domain work wastes the most expensi
 
 ## 9. Built-in Workflows
 
-All workflow YAMLs live in `hyperd/workflows/`. Available by default:
+All workflow YAMLs are bundled with the hyperd skill. Load them via `skill://hyperd/references/workflows/<file>`. Available by default:
 
 | File | Purpose |
 |------|---------|
@@ -204,4 +204,4 @@ All workflow YAMLs live in `hyperd/workflows/`. Available by default:
 | `research.yml` | Research → synthesize → validate |
 | `security-audit.yml` | Scout → review (security) → oracle gate → report |
 
-To add a custom workflow: create `hyperd/workflows/<name>.yml` following the schema in §2.
+To add a custom workflow: create a file at `skill://hyperd/references/workflows/<name>.yml` following the schema in §2.
