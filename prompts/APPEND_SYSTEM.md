@@ -43,6 +43,7 @@ Every subagent dispatch must follow this structure:
 | UI/visual design | `designer` | `worker` — workers don't design |
 | Reconnaissance, deep context | `scout` | `planner` — planners don't explore |
 | External research | `researcher` | `scout` — scouts don't research deeply |
+**Dispatch identity enforcement:** The specialist identity in every `task` MUST match its agent type. Implementation goes to `worker`, debugging to `debugger`, review to `reviewer` — never a mismatched pair (e.g. `planner` with a Worker-labeled task). A mismatch is a user-facing error: cancel the task and rerun it against the correct agent type from the guide above.
 
 # Output Contract
 
