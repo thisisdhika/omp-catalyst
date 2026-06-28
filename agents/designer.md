@@ -1,7 +1,7 @@
 ---
 name: designer
 description: "Visual design, UI/UX review, and UI debugging agent with vision multimodal capability"
-tools: read,bash,grep,find,ls
+tools: read,grep,glob,inspect_image,noesis_*
 model:
   - pi/vision
 thinkingMode: medium

@@ -1,7 +1,7 @@
 ---
 name: oracle
 description: "Risk assessment, design review, and product impact agent"
-tools: read,bash,grep,find,ls
+tools: read,grep,glob,noesis_*
 model:
   - pi/slow
 thinkingMode: high

@@ -21,6 +21,17 @@ phases:
     task: "Implement the feature according to the plan. Follow existing codebase conventions identified by scout. Implement in the order specified by planner."
     output_hint: "Modified/created files, implementation notes, any deviations from plan with justification"
 
+  - name: review_worker
+    agent: reviewer
+    task: "Review the implementation against the plan. Return PASS or structured feedback (issues with severity). If issues found, the worker will refine."
+    output_hint: "PASS or findings with severity"
+
+  - name: worker_refine
+    agent: worker
+    task: "If the reviewer returned findings, address them. If PASS, confirm no changes needed. Output the refined implementation or confirmation."
+    output_hint: "PASS or findings with severity"
+    optional: true
+
   - name: review
     agent: reviewer
     task: "Review the implementation for correctness, security, performance, and adherence to the plan and codebase conventions. Return findings with severity ratings."

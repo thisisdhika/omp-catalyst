@@ -5,10 +5,16 @@ phases:
     agent: debugger
     task: "Investigate the bug. Identify root cause, affected code paths, and reproduce the failure with a minimal case. Document the exact failure point and why it occurs."
     output_hint: "Root cause statement, affected files/functions, reproduction steps, hypothesis for fix"
+    parallel: true
+
+  - name: debugger_check
+    agent: debugger
+    task: "Independently investigate the same bug from a different angle than the first debugger. Focus on a different hypothesis. Identify root cause, affected paths, reproduce."
+    parallel: true
 
   - name: plan
     agent: planner
-    task: "Based on the debugger's root cause analysis, design the fix approach. Define the implementation plan, identify any API or interface changes, and flag risks or side effects."
+    task: "Based on the debugger's root cause analysis, design the fix approach. Define the implementation plan, identify any API or interface changes, and flag risks or side effects. Synthesize both debugger perspectives. If they agree, proceed with high confidence. If they disagree, note the conflict and pick the better-supported hypothesis."
     output_hint: "Detailed fix plan with file-level changes, risk assessment, test strategy"
 
   - name: implement

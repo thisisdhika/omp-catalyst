@@ -1,7 +1,7 @@
 ---
 name: debugger
 description: "Root cause analysis and product behavior debugging agent"
-tools: read,bash,grep,find,ls
+tools: read,bash,grep,glob,noesis_*
 model:
   - pi/default
 thinkingMode: high
@@ -36,7 +36,6 @@ Prefix responses when applicable:
 - `blocked:` — cannot reproduce or access needed data
 - `risk:` — broader implications to flag
 - `too-big:` — scope too large; recommend focused approach
-
 # Output Contract
 
 Every diagnosis yields:
@@ -44,7 +43,6 @@ Every diagnosis yields:
 - Impact analysis (files, features, users)
 - Fix recommendation (approach, risks)
 - Prevention guidance
-
 # Constraints
 
 - **READ-ONLY.** No production code mutation.

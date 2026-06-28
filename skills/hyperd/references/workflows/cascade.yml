@@ -1,0 +1,55 @@
+name: cascade
+description: Complexity-adaptive routing. Cheap path for simple tasks, full pipeline for complex ones.
+phases:
+  - name: triage
+    agent: scout
+    task: "Classify the task complexity as simple, moderate, or complex based on scope, number of files touched, dependency surface, and risk."
+    output_hint: "Complexity classification (simple/moderate/complex) with one-line justification"
+
+  - name: handle_simple
+    agent: worker
+    task: "Triage classified this as simple. Handle it directly — implement, test, and verify in one pass."
+    output_hint: "Completed implementation"
+    optional: true
+
+  - name: plan_moderate
+    agent: planner
+    task: "Triage classified this as moderate. Design the implementation approach: file-level changes, interface contracts, execution order."
+    output_hint: "Implementation plan for moderate task"
+    optional: true
+
+  - name: implement_moderate
+    agent: worker
+    task: "Triage classified this as moderate. Implement according to the plan from plan_moderate."
+    output_hint: "Completed implementation"
+    optional: true
+
+  - name: research_complex
+    agent: researcher
+    task: "Triage classified this as complex. Investigate the domain, prior art, libraries, and constraints before any planning happens."
+    output_hint: "Research findings, recommended approach, identified risks"
+    optional: true
+
+  - name: plan_complex
+    agent: planner
+    task: "Triage classified this as complex. Design the architecture based on research_complex findings. Define vertical slice, API contracts, execution order."
+    output_hint: "Architecture design, ordered task list"
+    optional: true
+
+  - name: implement_complex
+    agent: worker
+    task: "Triage classified this as complex. Implement according to the plan from plan_complex."
+    output_hint: "Completed implementation"
+    optional: true
+
+  - name: audit_complex
+    agent: reviewer
+    task: "Triage classified this as complex. Audit the implementation for correctness, security, and adherence to the plan."
+    output_hint: "Findings with severity, pass/fail verdict"
+    optional: true
+
+  - name: gate
+    agent: oracle
+    gate: oracle
+    task: "Assess the final output across all complexity paths. Determine whether the result is safe to deliver or requires remediation."
+    output_hint: "APPROVED / BLOCKED / MODIFY"

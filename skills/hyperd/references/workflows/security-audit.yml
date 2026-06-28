@@ -5,6 +5,12 @@ phases:
     agent: scout
     task: "Map the attack surface: all entry points (HTTP routes, CLI, events, queues), auth/authz boundaries, data flows touching PII or secrets, third-party integrations, and dependency inventory."
     output_hint: "Attack surface map, auth boundary diagram, PII data flows, dependency list"
+    parallel: true
+
+  - name: researcher
+    agent: researcher
+    task: "Map the dependency tree and identify all third-party packages, their versions, and known supply-chain risks. Cross-reference against the attack surface map from scout."
+    parallel: true
 
   - name: code-audit
     agent: reviewer

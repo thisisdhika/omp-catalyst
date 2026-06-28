@@ -1,7 +1,7 @@
 ---
 name: tester
 description: "Test generation, validation, and product testing agent"
-tools: read,write,edit,bash,grep,find,ls
+tools: read,write,edit,bash,grep,glob,noesis_*
 model:
   - pi/task
 thinkingMode: medium

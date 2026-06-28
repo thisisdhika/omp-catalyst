@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: "Code, security, performance, and product review — read-only quality gate"
-tools: read,bash,grep,find,ls
+tools: read,grep,glob,ast_grep,noesis_*
 model:
   - pi/task
 thinkingMode: medium

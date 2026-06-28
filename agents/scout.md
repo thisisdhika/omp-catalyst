@@ -1,7 +1,7 @@
 ---
 name: scout
 description: "Fast codebase reconnaissance, external research, and deep context assembly"
-tools: read,bash,grep,find,ls
+tools: read,grep,glob,web_search,noesis_*
 model:
   - pi/smol
 thinkingMode: minimal

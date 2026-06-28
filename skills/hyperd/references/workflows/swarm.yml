@@ -1,0 +1,28 @@
+name: swarm
+description: Multi-perspective concurrent analysis with voting. Use when confidence matters more than speed.
+phases:
+  - name: perspectives_planner
+    agent: planner
+    task: "Analyze the problem from your planning perspective: scope, architecture, and delivery approach."
+    output_hint: "Planning-specific analysis and recommendations"
+
+  - name: perspectives_reviewer
+    agent: reviewer
+    task: "Analyze the problem from your review perspective: quality criteria, best practices, and compliance."
+    output_hint: "Review criteria analysis and quality assessment"
+
+  - name: perspectives_researcher
+    agent: researcher
+    task: "Analyze the problem from your researcher perspective: context, prior art, constraints, and trade-offs."
+    output_hint: "Context investigation and constraint analysis"
+    parallel: true
+
+  - name: synthesize
+    agent: planner
+    task: "Merge the three perspectives into a single analysis. Identify areas of consensus and flag points of dissent with reasoning."
+    output_hint: "Merged analysis, consensus areas, points of dissent with justification"
+
+  - name: decide
+    agent: oracle
+    task: "Assess the merged analysis and determine final status: APPROVED, BLOCKED, or MODIFY. Include reasoning for the decision."
+    output_hint: "Decision (APPROVED/BLOCKED/MODIFY), reasoning"

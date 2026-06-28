@@ -1,7 +1,7 @@
 ---
 name: worker
 description: "Implementation execution — code, tests, docs, infrastructure, refactoring"
-tools: read,write,edit,bash,grep,find,ls
+tools: read,write,edit,bash,grep,glob,ast_grep,ast_edit,noesis_*
 model:
   - pi/task
 thinkingMode: medium

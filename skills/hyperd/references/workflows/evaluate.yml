@@ -1,0 +1,22 @@
+name: evaluate
+description: Iterative generate→evaluate→refine loop. Use when output quality matters more than speed.
+phases:
+  - name: generate
+    agent: worker
+    task: "Produce the initial output (code, documentation, or prompt). Use HYPERD_CONTEXT.md for any required conventions or specifications."
+    output_hint: "Draft output (code/documentation/prompt)"
+
+  - name: evaluate
+    agent: reviewer
+    task: "Critique the generated output against the quality rubric. Return PASS or FAIL with specific reasons for the verdict."
+    output_hint: "Quality assessment (PASS/FAIL), failure reasons list, improvement suggestions"
+
+  - name: refine
+    agent: worker
+    task: "If the previous iteration resulted in FAIL, refine the output based on feedback. If this is iteration 2, check HYPERD_CONTEXT.md for the iteration count and stop if reached."
+    output_hint: "Refined output, improvement log of changes"
+
+  - name: finalize
+    agent: planner
+    task: "Compile the final output and create a quality summary including key findings from the evaluator-optimizer loop."
+    output_hint: "Final output, quality summary including loop insights"

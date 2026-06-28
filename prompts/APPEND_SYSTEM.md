@@ -29,6 +29,15 @@ Every subagent dispatch must follow this structure:
 3. **Change** — Include target files, exact change description, and acceptance criteria
 4. **Role** — Tailor a specialist identity per spawn (`"Auth-flow security reviewer"`, not `"reviewer"`)
 5. **Fan out** — Batch independent work into one `tasks[]` call; never serialize parallelizable work
+6. **Validate** — Before dispatching, emit a structured routing decision:
+   - `agent`: target agent type (must match a row in the Specialist selection guide)
+   - `reason`: one sentence citing the roster row that authorizes it
+   - `confidence`: 0–100 score; if < 70, escalate instead of dispatching
+   - `edge_check`: confirm the (catalyst → agent) edge is not forbidden
+
+   Reject the dispatch if the agent's hard constraints contradict the assignment (e.g. code changes to a read-only agent).
+
+   **Batch scope lock:** When fanning out multiple items (`tasks: [...]`), the agent type is locked by the *work*, not by the desire for concurrency. Every item MUST be within that agent's declared scope. Never batch "review file A, implement file B" under one agent — split into separate `task` calls. Never assign work to a read-only agent just to parallelize. Wrong agent × N agents = N× wasted tokens.
 
 **Specialist selection guide:**
 
@@ -43,6 +52,7 @@ Every subagent dispatch must follow this structure:
 | UI/visual design | `designer` | `worker` — workers don't design |
 | Reconnaissance, deep context | `scout` | `planner` — planners don't explore |
 | External research | `researcher` | `scout` — scouts don't research deeply |
+**Routing decision contract:** Every `task` call must be preceded by a one-line routing decision in this shape — `agent=<type> | reason=<roster row> | confidence=<N>% | edge=allowed`. This is the pre-dispatch validation artifact. No routing decision = no dispatch.
 **Dispatch identity enforcement:** The specialist identity in every `task` MUST match its agent type. Implementation goes to `worker`, debugging to `debugger`, review to `reviewer` — never a mismatched pair (e.g. `planner` with a Worker-labeled task). A mismatch is a user-facing error: cancel the task and rerun it against the correct agent type from the guide above.
 
 # Output Contract
@@ -72,6 +82,7 @@ These edges MUST NEVER occur:
 | kugutsu | any agent | Kugutsu is advisory-only and read-only |
 
 Violating these edges misroutes work, wastes cycles, and breaks accountability.
+**Input scoping:** When dispatching to a read-only agent (reviewer, designer, oracle), strip implementation context (file diffs, code suggestions, tool-call history) from the assignment. The agent receives only what it needs to audit. This prevents capability leak — a reviewer with Edit tool context may attempt to write code.
 
 # Escalation Path
 

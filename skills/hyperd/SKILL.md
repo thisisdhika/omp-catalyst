@@ -10,7 +10,6 @@ description: >
 
 # Hyperd — Workflow-Driven Multi-Agent Orchestrator
 
-
 ---
 
 ## 1. Entry Point
@@ -37,10 +36,14 @@ Always select a workflow autonomously. Never ask the user to pick one.
 | Cleanup, restructure, extract module, tech debt | `refactor` |
 | "Research X", "evaluate Y", "compare options", decision brief | `research` |
 | Security review, pen test prep, compliance, "check for vulns" | `security-audit` |
+| Evaluate, refine, quality loop, iterative improvement | `evaluate` |
+| Multi-perspective analysis, voting, confidence-critical decision | `swarm` |
+| Complexity-adaptive, cost-sensitive, route by difficulty | `cascade` |
 
 If two plausibly fit, pick the narrower one. Announce selection in one sentence, then proceed.
 
 ### Load the chosen workflow
+
 Agents load the workflow from the skill's bundled assets:
 > **Path**: built-in workflows live at `skill://hyperd/references/workflows/` — within the skill's base directory, not inferred from the repo root.
 > If the path cannot be resolved, surface ambiguity explicitly; never continue with an unconfirmed location.
@@ -83,6 +86,19 @@ Combine:
 - Full `HYPERD_CONTEXT.md` artifact (all prior phase outputs)
 - Any user-supplied inputs (error messages, file paths, issue text, specs)
 
+**Step 2.5 — Validate routing**
+
+Before dispatching, emit a one-line routing decision:
+`agent=<agent-id> | reason=<roster row + Does NOT check> | confidence=<N>% | edge=allowed`
+
+- Verify target agent exists in the roster (§4).
+- Verify the agent's 'Does NOT' column does not contradict the task.
+- Confidence < 70% → do not dispatch; re-phase the task or escalate.
+
+No routing decision = no dispatch.
+
+> **Input scoping**: when dispatching to a read-only agent (reviewer, designer, oracle), strip implementation context — file diffs, code suggestions, tool-call history — from the assignment. Pass only what the agent needs to audit. Prevents capability leak.
+
 **Step 3 — Dispatch**
 
 - **Claude Code**: spawn subagent with composed prompt.
@@ -98,22 +114,34 @@ Append to `HYPERD_CONTEXT.md` (see §5). Keep sections tight: decisions, finding
 
 > **Parallel phases**: phases with `parallel: true` dispatch alongside the previous phase. Merge parallel outputs into one `HYPERD_CONTEXT.md` section before the next sequential phase.
 
+## 3.1 Parallel vs. one-off
+
+### Parallel vs. one-off
+
+**Use parallel** (`parallel: true` or batch `tasks[]`) when subtasks are independent — no shared state, no ordering dependency. Each branch reads the same HYPERD_CONTEXT.md but produces its own output.
+
+**Use one-off** (sequential) when each phase depends on the previous output. Default to this when unsure.
+
+Parallel speeds up independent work but multiplies cost (tokens × agents). Never parallelize to hide uncertainty — if you don't know whether tasks are independent, run them sequentially first.
+
+**Cost rule:** every parallel branch is a full agent invocation. A workflow with 3 parallel branches costs ~3× a sequential one. Justify the speed gain against the token cost before setting `parallel: true`.
+
 ## 4. Agent Roster
 
 Each agent has a defined identity, operating scope, and hard constraints. When dispatching, include the relevant identity block in the prompt.
 
-| Agent | Role | Hard constraints |
-|-------|------|-----------------|
-| **scout** | Codebase reconnaissance, pattern discovery, convention mapping | Read-only. Never modifies files. |
-| **researcher** | External knowledge, web research, documentation synthesis | Cites all sources. No implementation. |
-| **planner** | Architecture decisions, vertical slice decomposition, API contracts | Produces plans only. No code changes. |
-| **worker** | Implementation: code, tests, refactoring | Follows the plan. Implements only what was approved. |
-| **reviewer** | Code, security, performance audit | Read-only. Returns findings with severity (CRITICAL / HIGH / MEDIUM / LOW). |
-| **designer** | Visual/UX review, accessibility audit (WCAG) | Read-only audit. Returns findings + recommended fixes. |
-| **debugger** | Root cause analysis, minimal reproduction | Diagnosis only. Does not implement fixes. |
-| **tester** | Test generation, product validation, E2E / user journeys | Writes tests and validation scripts. Does not modify production code. |
-| **oracle** | Risk assessment, HOTL gating, irreversible-op approval | Returns APPROVED / BLOCKED / MODIFY. Never executes changes. |
-| **kugutsu** | Deep strategic analysis across multiple subsystems | **NUCLEAR OPTION — see §7.** READ-ONLY. Returns a delegation plan only. |
+| Agent | Role | Hard constraints | Does NOT |
+|-------|------|-----------------|----------|
+| **scout** | Codebase reconnaissance, pattern discovery, convention mapping | Read-only. Never modifies files. | Never modifies files; never implements or debugs |
+| **researcher** | External knowledge, web research, documentation synthesis | Cites all sources. No implementation. | Never implements; never modifies production code |
+| **planner** | Architecture decisions, vertical slice decomposition, API contracts | Produces plans only. No code changes. | Never writes code; never executes changes |
+| **worker** | Implementation: code, tests, refactoring | Follows the plan. Implements only what was approved. | Never plans architecture; never approves its own work |
+| **reviewer** | Code, security, performance audit | Read-only. Returns findings with severity (CRITICAL / HIGH / MEDIUM / LOW). | Never writes code; never modifies files it audits |
+| **designer** | Visual/UX review, accessibility audit (WCAG) | Read-only audit. Returns findings + recommended fixes. | Never implements; never modifies production code |
+| **debugger** | Root cause analysis, minimal reproduction | Diagnosis only. Does not implement fixes. | Never implements fixes; never modifies production code |
+| **tester** | Test generation, product validation, E2E / user journeys | Writes tests and validation scripts. Does not modify production code. | Never modifies production code it is testing |
+| **oracle** | Risk assessment, HOTL gating, irreversible-op approval | Returns APPROVED / BLOCKED / MODIFY. Never executes changes. | Never executes changes; never implements |
+| **kugutsu** | Deep strategic analysis across multiple subsystems | **NUCLEAR OPTION — see §7.** READ-ONLY. Returns a delegation plan only. | Never executes; never dispatches subagents |
 
 ---
 
@@ -173,7 +201,7 @@ Never bypass an oracle gate. If a gate is hit on an already-completed irreversib
 
 Kugutsu is **READ-ONLY**. It returns a delegation plan. Hyperd (you) executes the plan.
 
-**Before invoking Kugutsu, ask:** *"Which specialist agent could handle this instead?"*  
+**Before invoking Kugutsu, ask:** "Which specialist agent could handle this instead?"  
 If any single agent from the roster is sufficient → dispatch that agent. Kugutsu is not a shortcut.
 
 Misdispatching Kugutsu for routine or single-domain work wastes the most expensive agent in the roster and violates the cost covenant.
@@ -187,6 +215,7 @@ Misdispatching Kugutsu for routine or single-domain work wastes the most expensi
 | Agent produces no actionable output | Re-dispatch with tighter constraints. If still empty, mark `INCONCLUSIVE`, log context, continue unless hard prerequisite. |
 | Agent drifts out of scope | Return to task with explicit scope reminder and output format. |
 | Irreversible action without oracle gate | STOP. Invoke oracle retroactively before further action. |
+| Agent dispatched to wrong specialist type | **routing-lock**: cancel task, emit structured routing decision, rerun with correct agent type before re-dispatching. |
 | Phase dependency produces unusable output | Re-run phase, or escalate to user with context artifact. |
 
 ---
@@ -203,5 +232,8 @@ All workflow YAMLs are bundled with the hyperd skill. Load them via `skill://hyp
 | `refactor.yml` | Scout → plan → implement → review |
 | `research.yml` | Research → synthesize → validate |
 | `security-audit.yml` | Scout → review (security) → oracle gate → report |
+| `evaluate.yml` | Generate → evaluate → refine loop (max 2 iterations) |
+| `swarm.yml` | 3-perspective concurrent analysis → synthesize → oracle gate |
+| `cascade.yml` | Scout triage → simple/moderate/complex path → oracle gate |
 
 To add a custom workflow: create a file at `skill://hyperd/references/workflows/<name>.yml` following the schema in §2.

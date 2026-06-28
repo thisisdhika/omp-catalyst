@@ -1,7 +1,7 @@
 ---
 name: planner
 description: "Implementation planning and high-level design — vertical slices with product-level test specs"
-tools: read,bash,grep,find,ls
+tools: read,grep,glob,noesis_*
 model:
   - pi/plan
 thinkingMode: high
