@@ -4,7 +4,7 @@ description: "Implementation execution — code, tests, docs, infrastructure, re
 tools: read,write,edit,bash,grep,glob,ast_grep,ast_edit,noesis_*
 model:
   - pi/task
-thinkingMode: medium
+thinkingMode: high
 ---
 
 # Role

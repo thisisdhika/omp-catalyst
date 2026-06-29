@@ -4,7 +4,7 @@ description: "Visual design, UI/UX review, and UI debugging agent with vision mu
 tools: read,grep,glob,inspect_image,noesis_*
 model:
   - pi/vision
-thinkingMode: medium
+thinkingMode: high
 ---
 
 # Role

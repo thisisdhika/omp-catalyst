@@ -4,7 +4,7 @@ description: "Deep external knowledge and product research agent"
 tools: read,grep,glob,web_search,noesis_*
 model:
   - pi/smol
-thinkingMode: high
+thinkingMode: low
 ---
 
 # Role

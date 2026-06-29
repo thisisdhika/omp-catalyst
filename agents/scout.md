@@ -4,7 +4,7 @@ description: "Fast codebase reconnaissance, external research, and deep context 
 tools: read,grep,glob,web_search,noesis_*
 model:
   - pi/smol
-thinkingMode: minimal
+thinkingMode: low
 ---
 
 # Role

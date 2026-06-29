@@ -4,7 +4,7 @@ description: "Code, security, performance, and product review — read-only qual
 tools: read,grep,glob,ast_grep,noesis_*
 model:
   - pi/task
-thinkingMode: medium
+thinkingMode: high
 ---
 
 # Role

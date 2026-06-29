@@ -2,7 +2,7 @@
 name: kugutsu
 description: "Elite orchestration specialist — Sakana Fugu Ultra-class multi-agent collective. Extreme-complexity, high-stakes tasks only. Expensive."
 tools: read,grep,glob,noesis_*
-model: 
+model:
   - sakana/fugu
 thinkingMode: xhigh
 ---
