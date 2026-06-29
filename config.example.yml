@@ -14,7 +14,9 @@ catalyst:
       scout: kilo/poolside/laguna-m.1:free
       researcher: opencode-zen/deepseek-v4-flash-free
       planner: kilo/poolside/laguna-m.1:free
-      worker: kilo/poolside/laguna-xs.2:free
+      worker-basic: kilo/poolside/laguna-xs.2:free
+      worker-expert: kilo/poolside/laguna-m.1:free
+      worker-hyper: opencode-zen/deepseek-v4-flash-free
       reviewer: kilo/poolside/laguna-m.1:free
       tester: kilo/poolside/laguna-xs.2:free
       designer: kilo/poolside/laguna-m.1:free
@@ -25,7 +27,9 @@ catalyst:
       scout: google-antigravity/gemini-2.5-flash-lite
       researcher: opencode-go/deepseek-v4-flash
       planner: opencode-go/deepseek-v4-flash
-      worker: google-antigravity/gemini-3.1-flash-lite
+      worker-basic: google-antigravity/gemini-2.5-flash-lite
+      worker-expert: google-antigravity/gemini-3.1-flash-lite
+      worker-hyper: google-antigravity/gemini-2.5-flash
       reviewer: opencode-go/deepseek-v4-flash
       tester: opencode-go/deepseek-v4-flash
       designer: google-antigravity/gemini-2.5-flash
@@ -36,7 +40,9 @@ catalyst:
       scout: opencode-go/deepseek-v4-flash
       researcher: openai-codex/gpt-5.4-mini
       planner: opencode-go/qwen-3.7-plus
-      worker: google-antigravity/gemini-3.5-flash
+      worker-basic: opencode-go/deepseek-v4-flash
+      worker-expert: google-antigravity/gemini-3.5-flash
+      worker-hyper: openai-codex/gpt-5.4-mini
       reviewer: openai-codex/gpt-5.4-mini
       tester: google-antigravity/gemini-3.5-flash
       designer: openai-codex/gpt-5.4-mini
@@ -47,7 +53,9 @@ catalyst:
       scout: opencode-go/deepseek-v4-pro
       researcher: opencode-go/deepseek-v4-pro
       planner: google-antigravity/gemini-3.1-pro
-      worker: openai-codex/gpt-5.4
+      worker-basic: opencode-go/deepseek-v4-pro
+      worker-expert: openai-codex/gpt-5.4
+      worker-hyper: google-antigravity/gemini-3.1-pro
       reviewer: google-antigravity/claude-sonnet-4-6
       tester: openai-codex/gpt-5.4
       designer: opencode-go/qwen-3.7-plus
@@ -58,7 +66,9 @@ catalyst:
       scout: openai-codex/gpt-5.5
       researcher: google-antigravity/gemini-3.1-pro
       planner: openai-codex/gpt-5.5
-      worker: opencode-go/deepseek-v4-pro
+      worker-basic: google-antigravity/gemini-3.1-pro
+      worker-expert: opencode-go/deepseek-v4-pro
+      worker-hyper: openai-codex/gpt-5.5
       reviewer: google-antigravity/claude-opus-4-6
       tester: openai-codex/gpt-5.5
       designer: google-antigravity/gemini-3.1-pro

@@ -13,7 +13,7 @@ phases:
     gate: oracle
 
   - name: implement
-    agent: worker
+    agent: worker-expert
     task: "Execute the refactoring plan step by step. Maintain green tests at each step. Do not add features — refactor only. Follow the plan's execution order strictly."
     output_hint: "Completed steps, modified files, test status at each checkpoint, any deviations"
 

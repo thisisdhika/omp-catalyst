@@ -4,7 +4,7 @@ Catalyst Squad orchestrator for oh-my-pi
 
 ## What It Is
 
-omp-catalyst is a HOTL-native (Human-on-The-Loop) multi-agent orchestrator for oh-my-pi. It ships 9 specialized subagents that work together under a unified coordination model: define criteria upfront, run autonomously, and escalate exceptions only when confidence drops or risk requires a human gate.
+omp-catalyst is a HOTL-native (Human-on-The-Loop) multi-agent orchestrator for oh-my-pi. It ships specialized subagents that work together under a unified coordination model: define criteria upfront, run autonomously, and escalate exceptions only when confidence drops or risk requires a human gate.
 
 Catalyst is installed as native OMP prompt and rule files. `APPEND_SYSTEM.md` gives the main agent a compact, always-on identity as a pure delegator; `RULES.md` supplies the hard constraints. The main agent reads context, dispatches subagents, verifies gates, and talks to the human. It does not write code directly.
 ## Karpathy's 4 Principles
@@ -42,7 +42,9 @@ Catalyst is optimized for cross-model reliability, including weaker or free mode
 | **Scout** | Fast codebase reconnaissance and deep context assembly | read, bash, grep, find, ls | pi/smol |
 | **Researcher** | Deep external knowledge and product research | read, bash, grep, find, ls | pi/smol |
 | **Planner** | Implementation planning and high-level design | read, bash, grep, find, ls | pi/plan |
-| **Worker** | Implementation execution -- code, tests, docs, infrastructure | read, write, edit, bash, grep, find, ls | pi/task |
+| **Worker-Basic** | Simple, well-defined, single-file implementation | read, write, edit, bash, grep, find, ls | pi/task |
+| **Worker-Expert** | Complex multi-file implementation, refactoring, nuanced domain work | read, write, edit, bash, grep, find, ls | pi/task |
+| **Worker-Hyper** | Mission-critical, high-stakes, or coordination-heavy implementation | read, write, edit, bash, grep, find, ls | pi/task |
 | **Reviewer** | Code, security, performance, and product review | read, bash, grep, find, ls | pi/task |
 | **Tester** | Test generation, validation, and product testing | read, write, edit, bash, grep, find, ls | pi/task |
 | **Designer** | Visual design, UI/UX review, and vision multimodal debugging | read, bash, grep, find, ls | pi/vision |

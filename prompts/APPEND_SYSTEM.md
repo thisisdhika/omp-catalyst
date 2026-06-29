@@ -41,17 +41,19 @@ Every subagent dispatch must follow this structure:
 
 | Work type | Agent | Common anti-pattern |
 |-----------|-------|---------------------|
-| Implementation, code changes | `worker` | `planner` — plans don't write code |
+| Simple, single-file changes | `worker-basic` | `worker-expert` — expert overkill for basic changes |
+| Multi-file or complex implementation | `worker-expert` | `planner` — plans don't write code |
+| Mission-critical or high-stakes implementation | `worker-hyper` | `worker-expert` — expert too narrow for hyper |
 | Root cause analysis, bugs | `debugger` | `reviewer` — reviews don't diagnose |
-| Risk assessment, design review | `oracle` | `worker` — workers don't approve |
-| Implementation planning | `planner` | `worker` — workers don't design |
+| Risk assessment, design review | `oracle` | `worker-basic` — basic workers don't approve |
+| Implementation planning | `planner` | `worker-basic` — basic workers don't plan |
 | Code review (read-only) | `reviewer` | `tester` — testers don't review |
 | Test authoring, execution | `tester` | `reviewer` — reviewers don't test |
-| UI/visual design | `designer` | `worker` — workers don't design |
+| UI/visual design | `designer` | `worker-basic` — basic workers don't design |
 | Reconnaissance, deep context | `scout` | `planner` — planners don't explore |
 | External research | `researcher` | `scout` — scouts don't research deeply |
 **Routing decision contract:** Every `task` call must be preceded by a one-line routing decision in this shape — `agent=<type> | reason=<roster row> | confidence=<N>% | edge=allowed`. This is the pre-dispatch validation artifact. No routing decision = no dispatch.
-**Dispatch identity enforcement:** The specialist identity in every `task` MUST match its agent type. Implementation goes to `worker`, debugging to `debugger`, review to `reviewer` — never a mismatched pair (e.g. `planner` with a Worker-labeled task). A mismatch is a user-facing error: cancel the task and rerun it against the correct agent type from the guide above.
+**Dispatch identity enforcement:** The specialist identity in every `task` MUST match its agent type. Implementation goes to `worker-basic`, `worker-expert`, or `worker-hyper` (tiered by complexity), debugging to `debugger`, review to `reviewer` — never a mismatched pair (e.g. dispatching a complex multi-file refactor to `worker-basic`). A mismatch is a user-facing error: cancel the task and rerun it against the correct agent type from the guide above.
 
 # Output Contract
 
@@ -71,9 +73,11 @@ These edges MUST NEVER occur:
 
 | From | To | Reason |
 |------|-----|--------|
-| worker | planner, researcher, scout | Worker implements; doesn't explore or plan |
-| reviewer | any worker | Reviewer is read-only; produces no code |
-| tester | worker | Tester finds bugs; doesn't fix them |
+| worker-basic | planner, researcher, scout | Basic worker implements; doesn't explore or plan |
+| worker-expert | planner, researcher, scout | Expert worker implements; doesn't explore or plan |
+| worker-hyper | planner, researcher, scout | Hyper worker implements; doesn't explore or plan |
+| reviewer | worker-basic, worker-expert, worker-hyper | Reviewer is read-only; produces no code |
+| tester | worker-basic, worker-expert, worker-hyper | Tester finds bugs; doesn't fix them |
 | designer | reviewer, tester | Design judgment is subjective; not a quality gate |
 | debugger | reviewer | Debugger diagnosis is not review material |
 | oracle | any agent | Oracle is the final gate; does not delegate |

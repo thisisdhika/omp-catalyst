@@ -7,7 +7,7 @@ phases:
     output_hint: "Complexity classification (simple/moderate/complex) with one-line justification"
 
   - name: handle_simple
-    agent: worker
+    agent: worker-basic
     task: "Triage classified this as simple. Handle it directly — implement, test, and verify in one pass."
     output_hint: "Completed implementation"
     optional: true
@@ -19,7 +19,7 @@ phases:
     optional: true
 
   - name: implement_moderate
-    agent: worker
+    agent: worker-expert
     task: "Triage classified this as moderate. Implement according to the plan from plan_moderate."
     output_hint: "Completed implementation"
     optional: true
@@ -37,7 +37,7 @@ phases:
     optional: true
 
   - name: implement_complex
-    agent: worker
+    agent: worker-hyper
     task: "Triage classified this as complex. Implement according to the plan from plan_complex."
     output_hint: "Completed implementation"
     optional: true

@@ -17,7 +17,7 @@ phases:
     output_hint: "Architecture diagram or description, API contracts, ordered task list, definition of done"
 
   - name: implement
-    agent: worker
+    agent: worker-expert
     task: "Implement the feature according to the plan. Follow existing codebase conventions identified by scout. Implement in the order specified by planner."
     output_hint: "Modified/created files, implementation notes, any deviations from plan with justification"
 
@@ -27,7 +27,7 @@ phases:
     output_hint: "PASS or findings with severity"
 
   - name: worker_refine
-    agent: worker
+    agent: worker-basic
     task: "If the reviewer returned findings, address them. If PASS, confirm no changes needed. Output the refined implementation or confirmation."
     output_hint: "PASS or findings with severity"
     optional: true

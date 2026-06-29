@@ -18,7 +18,7 @@ phases:
     output_hint: "Detailed fix plan with file-level changes, risk assessment, test strategy"
 
   - name: implement
-    agent: worker
+    agent: worker-expert
     task: "Implement the fix exactly as specified in the plan. Do not scope-creep. Apply only the changes required to resolve the diagnosed root cause."
     output_hint: "List of modified files, diff summary, notes on any plan deviations"
 

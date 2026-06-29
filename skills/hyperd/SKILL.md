@@ -135,13 +135,17 @@ Each agent has a defined identity, operating scope, and hard constraints. When d
 | **scout** | Codebase reconnaissance, pattern discovery, convention mapping | Read-only. Never modifies files. | Never modifies files; never implements or debugs |
 | **researcher** | External knowledge, web research, documentation synthesis | Cites all sources. No implementation. | Never implements; never modifies production code |
 | **planner** | Architecture decisions, vertical slice decomposition, API contracts | Produces plans only. No code changes. | Never writes code; never executes changes |
-| **worker** | Implementation: code, tests, refactoring | Follows the plan. Implements only what was approved. | Never plans architecture; never approves its own work |
+| **worker-basic** | Well-scoped implementation for simple tasks: single-file changes, straightforward modifications | Follows explicit detailed plan. Implements only what was approved. Escalates on ambiguity. | Never plans architecture; never delegates; never approves own work |
+| **worker-expert** | Complex multi-file implementation, refactoring, subsystems requiring integration judgment | Autonomously implements from high-level plan. Makes sound design decisions within approved scope. | Never delegates to subagents; never approves own work; never defines system architecture |
+| **worker-hyper** | Highest-complexity implementation across multiple subsystems, orchestration-scale changes | Coordinates across subsystems. Makes architectural decisions within approved plan boundaries. | Never substitutes for kugutsu; never approves own work; never overrides plan constraints |
 | **reviewer** | Code, security, performance audit | Read-only. Returns findings with severity (CRITICAL / HIGH / MEDIUM / LOW). | Never writes code; never modifies files it audits |
 | **designer** | Visual/UX review, accessibility audit (WCAG) | Read-only audit. Returns findings + recommended fixes. | Never implements; never modifies production code |
 | **debugger** | Root cause analysis, minimal reproduction | Diagnosis only. Does not implement fixes. | Never implements fixes; never modifies production code |
 | **tester** | Test generation, product validation, E2E / user journeys | Writes tests and validation scripts. Does not modify production code. | Never modifies production code it is testing |
 | **oracle** | Risk assessment, HOTL gating, irreversible-op approval | Returns APPROVED / BLOCKED / MODIFY. Never executes changes. | Never executes changes; never implements |
 | **kugutsu** | Deep strategic analysis across multiple subsystems | **NUCLEAR OPTION — see §7.** READ-ONLY. Returns a delegation plan only. | Never executes; never dispatches subagents |
+
+**Worker tier selection**: When a workflow phase requires implementation, select the tier based on task complexity. Use `worker-basic` for single-file, well-defined changes; `worker-expert` for multi-file refactoring or subsystems; `worker-hyper` for cross-subsystem, high-complexity work. Default to `worker-expert` when unsure.
 
 ---
 
